@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Filters\BookFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BookFilterRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
@@ -10,11 +12,9 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(BookFilterRequest $request, BookFilter $filter): JsonResponse
     {
-        $books = Book::query()
-            ->with(['author', 'genre', 'language'])
-            ->get();
+        $books = Book::filter($filter)->get();
         return response()->json(BookResource::collection($books));
     }
 

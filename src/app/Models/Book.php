@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Core\Traits\HasFilter;
 use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Book extends Model
 {
+    use HasFilter;
     protected $fillable = [
         'title',
         'active',
