@@ -65,6 +65,7 @@ abstract class Filter
                     $value = explode(',', $value);
                 }
 
+
                 $this->builder = $this->{$methodName}($value);
             }
         }

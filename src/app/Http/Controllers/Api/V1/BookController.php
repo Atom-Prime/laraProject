@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\BookFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BookFilterRequest;
+use App\Http\Requests\Filters\FilterBookRequest;
+use App\Http\Requests\Store\StoreBookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
@@ -12,24 +13,15 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function index(BookFilterRequest $request, BookFilter $filter): JsonResponse
+    public function index(FilterBookRequest $request, BookFilter $filter): JsonResponse
     {
         $books = Book::filter($filter)->get();
         return response()->json(BookResource::collection($books));
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreBookRequest $request): JsonResponse
     {
-        $book = Book::create($request->only([
-            'title',
-            'author_id',
-            'genre_id',
-            'language_id',
-            'year'
-        ]));
-
-
-        return response()->json(new BookResource($book), 201);
+        return response()->json(new BookResource(Book::create($request->validated())), 201);
     }
 
     public function show(int $id): JsonResponse
