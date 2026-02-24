@@ -20,14 +20,3 @@ Route::prefix('authors')->group(function () {
     Route::get('{id}', [AuthorController::class, 'show']);
     Route::delete('{id}', [AuthorController::class, 'destroy']);
 });
-
-Route::prefix('genres')->group(function () {
-    Route::get('/', [GenreController::class, 'index']);
-    Route::post('/', [GenreController::class, 'store']);
-});
-
-Route::prefix('languages')->group(function () {
-   Route::get('/', [LanguageController::class, 'index']);
-   Route::post('/', [LanguageController::class, 'store']);
-});
-
