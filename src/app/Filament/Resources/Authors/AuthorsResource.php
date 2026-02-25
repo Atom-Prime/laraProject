@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Filament\Resources\Authors;
+
+use App\Filament\Resources\Authors\Pages\CreateAuthors;
+use App\Filament\Resources\Authors\Pages\EditAuthors;
+use App\Filament\Resources\Authors\Pages\ListAuthors;
+use App\Filament\Resources\Authors\Schemas\AuthorsForm;
+use App\Filament\Resources\Authors\Tables\AuthorsTable;
+use App\Models\Authors;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class AuthorsResource extends Resource
+{
+    protected static ?string $model = Authors::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static ?string $recordTitleAttribute = 'Autors';
+
+    public static function form(Schema $schema): Schema
+    {
+        return AuthorsForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return AuthorsTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListAuthors::route('/'),
+            'create' => CreateAuthors::route('/create'),
+            'edit' => EditAuthors::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRecordRouteBindingEloquentQuery(): Builder
+    {
+        return parent::getRecordRouteBindingEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+}
